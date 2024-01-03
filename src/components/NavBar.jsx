@@ -32,6 +32,14 @@ export default function NavBar() {
         Cookies.remove('startTime');
         Cookies.remove('endTime');
         Cookies.remove('description');
+        Cookies.remove('skills');
+        Cookies.remove('workHistory');
+        Cookies.remove('education');
+        Cookies.remove('firstName');
+        Cookies.remove('lastName');
+        Cookies.remove('email');
+        Cookies.remove('city');
+        Cookies.remove('phone');
         navigate('/', { replace: true }); // Redirect to login page (and the browser's history stack is completely replaced with the new one. )
     };
 

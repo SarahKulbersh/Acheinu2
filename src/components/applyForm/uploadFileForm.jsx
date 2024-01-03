@@ -17,16 +17,16 @@ function UploadFileForm() {
 
     const getCurrentDateTimeString = () => {
         const currentDate = new Date();
-    
+
         const year = currentDate.getFullYear();
         const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
         const day = currentDate.getDate().toString().padStart(2, "0");
         const hours = currentDate.getHours().toString().padStart(2, "0");
         const minutes = currentDate.getMinutes().toString().padStart(2, "0");
         const seconds = currentDate.getSeconds().toString().padStart(2, "0");
-    
+
         return `${hours}_${minutes}_${seconds}_${year}_${month}_${day}`;
-      }
+    }
 
     const emailEmployer = async (fileName) => {
 
@@ -34,31 +34,47 @@ function UploadFileForm() {
         const jobId = sessionStorage.getItem("jobId")
         const employerId = extractEmailFromDateString(jobId)
         const date = getCurrentDateTimeString()
-    
+
         try {
             const fileRef = ref(storage, `resumes/${fileName}`);
             const fileURL = await getDownloadURL(fileRef)
 
-          await setDoc(doc(database, "mail", `${userId}_#_${date}_#_${employerId}`), {
-            to: [employerId],
-            message: {
-              subject: `${Cookies.get('firstName')} ${Cookies.get('lastName')} might be a good fit for ${sessionStorage.getItem("jobTitle")} `,
-              text: 'This is the plaintext section of the email body.',
-              html: `Contact ${Cookies.get('firstName') +" "+ Cookies.get('lastName')} by emailing ${userId} or calling ${Cookies.get('phone')}. 
-              Take a look at their resume <a href=${fileURL}>${Cookies.get('firstName')} ${Cookies.get('lastName')} resume</a>`,
-            //   attachments: [
-            //     {
-            //       content: fileURL,
-            //       filename: fileName,
-            //     },
-            //   ],
-            }
-          });
+            await setDoc(doc(database, "mail", `${userId}_#_${date}_#_${employerId}`), {
+                to: [employerId],
+                message: {
+                    subject: `${Cookies.get('firstName')} ${Cookies.get('lastName')} might be a good fit for ${sessionStorage.getItem("jobTitle")} `,
+                    text: 'This is the plaintext section of the email body.',
+                    html: `
+                        <p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+                            Contact <strong>${Cookies.get('firstName')} ${Cookies.get('lastName')}</strong> by:
+                        </p>
+                        <p style="margin-top: 10px;">
+                        <a href="mailto:${userId}" style="color: #3498db; text-decoration: none;">
+                            Emailing ${userId}
+                        </a>
+                        <br>
+                        Calling ${Cookies.get('phone')}
+                        </p>
+                        <p style="margin-top: 15px;">
+                        Take a look at ${Cookies.get('firstName')} ${Cookies.get('lastName')}'s resume:
+                        <a href="${fileURL}" style="background-color: #3498db; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                            ${Cookies.get('firstName')} ${Cookies.get('lastName')}'s resume
+                        </a>
+                        </p>
+                        `,
+                    //   attachments: [
+                    //     {
+                    //       content: fileURL,
+                    //       filename: fileName,
+                    //     },
+                    //   ],
+                }
+            });
         } catch (error) {
-          console.error("Error submitUserDetails:", error);
+            console.error("Error submitUserDetails:", error);
         }
-      }
-    
+    }
+
     const uploadFile = async (e) => {
 
         e.preventDefault()
@@ -91,7 +107,7 @@ function UploadFileForm() {
                 // console.log(resumeFile.size / 1024 / 1024 + "MB");
                 // console.log(resumeFile.type);
                 // console.log(resumeFile.name);
-            
+
                 await uploadBytes(refFIle, resumeFile);
                 const fileName = resumeFile.name + myId
                 await emailEmployer(fileName)

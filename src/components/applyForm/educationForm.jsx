@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Card, Button, Form } from 'react-bootstrap';
 import { addMore } from "../../assets/index"
 import { applyFormCardNumberContext } from '../../Context';
@@ -23,6 +23,30 @@ function EducationForm() {
   const currentYear = today.getFullYear();
   const years = [...Array(31).keys()].map((year) => currentYear - year);
   const [error, setError] = useState(''); // To store error messages
+
+  // This will get the values the user put before mooving on with form
+  useEffect(() => {
+    let cookiesEducation = Cookies.get('education');
+
+    if (cookiesEducation !== undefined) {
+      cookiesEducation = JSON.parse(cookiesEducation);
+
+      cookiesEducation.map((e, index) => (
+        setEducation(prevEducation => [
+          ...(index > 0 ? prevEducation : []),
+          {
+            educationLevel: e.educationLevel,
+            schoolName: e.schoolName,
+            studyName: e.studyName,
+            timeOfStudyFromMonth: e.timeOfStudyFromMonth,
+            timeOfStudyFromYear: e.timeOfStudyFromYear,
+            timeOfStudyToMonth: e.timeOfStudyToMonth,
+            timeOfStudyToYear: e.timeOfStudyToYear
+          }
+        ])
+      ));
+    }
+  }, []);
 
   const submitEducation = () => {
 
@@ -120,7 +144,7 @@ function EducationForm() {
               <Form.Label className='job_form_field'>Level of education *</Form.Label>
               <Form.Control className='job_form_input' type='text' name='educationLevel' required value={e.educationLevel} onChange={(e) => handleEducationChange(e, index)} />
               <Form.Label className='job_form_field'>Field of study</Form.Label>
-              <Form.Control className='job_form_input' type='text' name='studyName' required value={e.studyField} onChange={(e) => handleEducationChange(e, index)} />
+              <Form.Control className='job_form_input' type='text' name='studyName' required value={e.studyName} onChange={(e) => handleEducationChange(e, index)} />
               <Form.Label className='job_form_field'>Name of school</Form.Label>
               <Form.Control className='job_form_input' type='text' name='schoolName' required value={e.schoolName} onChange={(e) => handleEducationChange(e, index)} />
 

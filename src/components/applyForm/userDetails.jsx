@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Card, Form } from 'react-bootstrap';
 import { applyFormCardNumberContext } from '../../Context';
 import Cookies from 'js-cookie';
@@ -8,6 +8,38 @@ import '../../styles/inputError.css'
 function UserDetails() {
     const { applyFormCardNumber, setApplyFormCardNumber } = useContext(applyFormCardNumberContext)
     const userId = sessionStorage.getItem("userId")
+
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [city, setCity] = useState('')
+    const [phone, setPhone] = useState('')
+    const [phoneAreaCode, setPhoneAreaCode] = useState('')
+
+    useEffect(() => {
+
+        if (Cookies.get('firstName') !== undefined) {
+            setFirstName(Cookies.get('firstName'))
+        }
+        if (Cookies.get('lastName') !== undefined) {
+            setLastName(Cookies.get('lastName'))
+        }
+        if (Cookies.get('email') !== undefined) {
+            setEmail(Cookies.get('email'))
+        }
+        if (Cookies.get('city') !== undefined) {
+            setCity(Cookies.get('city'))
+        }
+        if (Cookies.get('phone') !== undefined) {
+            setPhone(Cookies.get('phone'))
+        }
+        if (Cookies.get('phoneAreaCode') !== undefined) {
+            setPhoneAreaCode(Cookies.get('phoneAreaCode'))
+        }
+
+    }, []);
+
+
 
     const submitUserDetails = () => {
         Cookies.set('firstName', firstName);
@@ -67,14 +99,6 @@ function UserDetails() {
         }));
     };
 
-    // card 1
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [city, setCity] = useState('')
-    const [phone, setPhone] = useState('')
-    const [phoneAreaCode, setPhoneAreaCode] = useState('')
-
     return (
         <Card>
             <Card.Body className='job_apply_form_body'>
@@ -98,7 +122,7 @@ function UserDetails() {
                     </div>
                     <div className='job_apply_field'>
                         <Form.Label>City (optional)</Form.Label>
-                        <Form.Control type='text' onChange={(e) => setCity(e.target.value)} onBlur={() => handleBlur('city')} />
+                        <Form.Control type='text' onChange={(e) => setCity(e.target.value)} onBlur={() => handleBlur('city')} value={city} />
                         {errors.city && <p className="error-message">{errors.city}</p>}
                     </div>
                     <div className='job_apply_field'>

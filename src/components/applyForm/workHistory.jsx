@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Card, Button, Form } from 'react-bootstrap';
 import { applyFormCardNumberContext } from '../../Context';
 import { addMore } from "../../assets/index"
@@ -12,6 +12,42 @@ function WorkHistory() {
     const currentYear = today.getFullYear();
     const years = [...Array(31).keys()].map((year) => currentYear - year);
     const [error, setError] = useState(''); // To store error messages
+
+    const [jobs, setJobs] = useState([
+        {
+            company: '',
+            description: '',
+            timeOfWorkFromMonth: 'Month',
+            timeOfWorkFromYear: 'Year',
+            timeOfWorkToMonth: 'Month',
+            timeOfWorkToYear: 'Year',
+            title: ''
+        }])
+
+    // This will get the values the user put before mooving on with form
+    useEffect(() => {
+        let cookiesWorkHistory = Cookies.get('workHistory');
+
+        if (cookiesWorkHistory !== undefined) {
+            cookiesWorkHistory = JSON.parse(cookiesWorkHistory);
+
+            cookiesWorkHistory.map((job, index) => (
+                setJobs(prevWorkHistory => [
+                    ...(index > 0 ? prevWorkHistory : []),
+                    {
+                        company: job.company,
+                        description: job.description,
+                        title: job.title,
+                        timeOfWorkFromMonth: job.timeOfWorkFromMonth,
+                        timeOfWorkFromYear: job.timeOfWorkFromYear,
+                        timeOfWorkToMonth: job.timeOfWorkToMonth,
+                        timeOfWorkToYear: job.timeOfWorkToYear
+                    }
+                ])
+            ));
+        }
+    }, []);
+
 
     const submitWorkHistory = () => {
 
@@ -55,28 +91,18 @@ function WorkHistory() {
 
             return false
         })
-            if (hasEmptyFields) {
-                setError("All fields must be filled to submit work history")
-            } else if (hasInvalidDates) {
-                setError("Work dates are invalid")
-            } else {
-                Cookies.set('workHistory', JSON.stringify(jobs))
-                setApplyFormCardNumber(6)
-            }
+        if (hasEmptyFields) {
+            setError("All fields must be filled to submit work history")
+        } else if (hasInvalidDates) {
+            setError("Work dates are invalid")
+        } else {
+            Cookies.set('workHistory', JSON.stringify(jobs))
+            setApplyFormCardNumber(6)
+        }
 
-            return false;
+        return false;
     }
 
-    const [jobs, setJobs] = useState([
-        {
-            company: '',
-            description: '',
-            timeOfWorkFromMonth: 'Month',
-            timeOfWorkFromYear: 'Year',
-            timeOfWorkToMonth: 'Month',
-            timeOfWorkToYear: 'Year',
-            title: ''
-        }])
     const handleWorkHistoryChange = (event, index) => {
         let { name, value } = event.target;
         let onChangeValue = [...jobs];

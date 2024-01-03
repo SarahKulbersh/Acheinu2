@@ -125,7 +125,14 @@ function ResumeOptionsForm() {
         message: {
           subject: `${Cookies.get('firstName')} ${Cookies.get('lastName')} might be a good fit for ${sessionStorage.getItem("jobTitle")} `,
           text: 'This is the plaintext section of the email body.',
-          html: `Contact ${Cookies.get('firstName') +" "+ Cookies.get('lastName')} by emailing ${userId} or calling ${Cookies.get('phone')}.`,
+          html: `
+          <p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+          Contact ${Cookies.get('firstName')} ${Cookies.get('lastName')} by emailing ${userId} or calling ${Cookies.get('phone')}.
+        </p>
+        <p style="margin-top: 15px;">
+          <a href="mailto:${userId}" style="background-color: #3498db; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Email ${userId}</a>
+        </p>
+          `,
         }
       });
     } catch (error) {
