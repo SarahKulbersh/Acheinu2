@@ -140,7 +140,7 @@ function UpdateWorkHistory({ setPage }) {
           {jobs?.map((job, index) => (
             <div key={index}>
               {index >= 1 &&
-                <p className='error-message' style={{ cursor: "pointer" }} onClick={handleDeleteWorkHistoryInput}>Remove work history</p>
+                <p className='error-message' style={{ cursor: "pointer" }} onClick={() => { handleDeleteWorkHistoryInput(index) }}>Remove work history</p>
               }
               <Form.Group>
                 <Form.Label className='job_form_field'>Job title *</Form.Label>

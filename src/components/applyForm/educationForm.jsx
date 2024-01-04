@@ -26,6 +26,7 @@ function EducationForm() {
 
   // This will get the values the user put before mooving on with form
   useEffect(() => {
+
     let cookiesEducation = Cookies.get('education');
 
     if (cookiesEducation !== undefined) {
@@ -139,7 +140,7 @@ function EducationForm() {
           {education?.map((e, index) => (
             <div key={index}>
               {index >= 1 &&
-                <p className='error-message' style={{ cursor: "pointer" }} onClick={handleDeleteInput}>Remove Education</p>
+                <p className='error-message' style={{ cursor: "pointer" }} onClick={() => { handleDeleteInput(index) }}>Remove Education</p>
               }
               <Form.Label className='job_form_field'>Level of education *</Form.Label>
               <Form.Control className='job_form_input' type='text' name='educationLevel' required value={e.educationLevel} onChange={(e) => handleEducationChange(e, index)} />

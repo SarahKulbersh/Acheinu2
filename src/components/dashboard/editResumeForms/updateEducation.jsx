@@ -142,7 +142,7 @@ function UpdateEducation({ setPage }) {
         <Form className='job_form_apply_fields'>
           {education?.map((e, index) => (
             <div key={index}>
-              { index >= 1 && <p style={{ color: "red", cursor: "pointer" }} onClick={handleDeleteInput}>Remove Education</p> }
+              { index >= 1 && <p style={{ color: "red", cursor: "pointer" }} onClick={() => { handleDeleteInput(index) }}>Remove Education</p> }
               <Form.Label className='job_form_field'>Level of education *</Form.Label>
               <Form.Control className='job_form_input' type='text' name='educationLevel' required value={e.educationLevel} onChange={(e) => handleEducationChange(e, index)} />
               <Form.Label className='job_form_field'>Field of study</Form.Label>
