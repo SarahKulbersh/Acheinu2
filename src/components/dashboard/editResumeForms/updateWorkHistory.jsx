@@ -11,13 +11,13 @@ function UpdateWorkHistory({ setPage }) {
   const editedItem = JSON.parse(storedItem);
   const [jobs, setJobs] = useState([
     {
-      company: editedItem.company,
-      description: editedItem.description,
-      timeOfWorkFromMonth: editedItem.timeOfWorkFromMonth,
-      timeOfWorkFromYear: editedItem.timeOfWorkFromYear,
-      timeOfWorkToMonth: editedItem.timeOfWorkToMonth,
-      timeOfWorkToYear: editedItem.timeOfWorkToYear,
-      title: editedItem.title
+      company: editedItem?.company,
+      description: editedItem?.description,
+      timeOfWorkFromMonth: editedItem?.timeOfWorkFromMonth,
+      timeOfWorkFromYear: editedItem?.timeOfWorkFromYear,
+      timeOfWorkToMonth: editedItem?.timeOfWorkToMonth,
+      timeOfWorkToYear: editedItem?.timeOfWorkToYear,
+      title: editedItem?.title
     }])
   const today = new Date();
   const currentYear = today.getFullYear();
@@ -85,7 +85,7 @@ function UpdateWorkHistory({ setPage }) {
     const userRef = doc(persons, userId);
     const storedItem = sessionStorage.getItem('editObject');
     const editedItem = JSON.parse(storedItem);
-    const educationId = `${editedItem.timeOfWorkFromYear}-${editedItem.timeOfWorkToYear}`;
+    const educationId = `${editedItem?.timeOfWorkFromYear}-${editedItem?.timeOfWorkToYear}`;
     const docRef = doc(collection(userRef, 'workHistory'), educationId);
     await deleteDoc(docRef);
 
@@ -113,18 +113,6 @@ function UpdateWorkHistory({ setPage }) {
     let onChangeValue = [...jobs];
     onChangeValue[index][name] = value;
     setJobs(onChangeValue);
-  };
-
-  const handleAddWorkHistoryInput = () => {
-    setJobs([...jobs, {
-      company: "",
-      description: "",
-      timeOfWorkFromMonth: "",
-      timeOfWorkFromYear: "",
-      timeOfWorkToMonth: "",
-      timeOfWorkToYear: "",
-      title: ""
-    }]);
   };
 
   const handleDeleteWorkHistoryInput = (index) => {
@@ -204,9 +192,6 @@ function UpdateWorkHistory({ setPage }) {
                 value={job.description}
                 onChange={(e) => handleWorkHistoryChange(e, index)}
               />
-              {index === jobs.length - 1 && (
-                <div className='job_form_add' onClick={() => handleAddWorkHistoryInput()}><img src={addMore} alt="" /> Add more</div>
-              )}
 
             </div>
           ))}

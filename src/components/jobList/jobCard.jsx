@@ -143,7 +143,10 @@ export default function JobCard({ postingJobsData }) {
         <Modal.Header closeButton>
           <Modal.Title>{job.jobTitle}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{job.jobDescription && parse(job.jobDescription)}</Modal.Body>
+        <Modal.Body>
+          {job.jobDescription && parse(job.jobDescription)}
+          <p> Pay: {job.minPay}-{job.maxPay}{job.payCurrency} {job.jobPaymentPer}</p>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close

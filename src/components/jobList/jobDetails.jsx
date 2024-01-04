@@ -71,6 +71,7 @@ export default function JobDetails() {
         ) : null}</div>
       </div>
       <text>{parse(job.jobDescription)}</text>
+      <p>Pay: {job.minPay}-{job.maxPay}{job.payCurrency} {job.jobPaymentPer}</p>
     </div>
   );
 }

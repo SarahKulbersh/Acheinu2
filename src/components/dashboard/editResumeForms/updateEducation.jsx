@@ -17,13 +17,13 @@ function UpdateEducation({ setPage }) {
 
   const [education, setEducation] = useState([
     {
-      educationLevel: editedItem.educationLevel,
-      schoolName: editedItem.schoolName,
-      studyName: editedItem.studyName,
-      timeOfStudyFromMonth: editedItem.timeOfStudyFromMonth,
-      timeOfStudyFromYear: editedItem.timeOfStudyFromYear,
-      timeOfStudyToMonth: editedItem.timeOfStudyToMonth,
-      timeOfStudyToYear: editedItem.timeOfStudyToYear
+      educationLevel: editedItem?.educationLevel,
+      schoolName: editedItem?.schoolName,
+      studyName: editedItem?.studyName,
+      timeOfStudyFromMonth: editedItem?.timeOfStudyFromMonth,
+      timeOfStudyFromYear: editedItem?.timeOfStudyFromYear,
+      timeOfStudyToMonth: editedItem?.timeOfStudyToMonth,
+      timeOfStudyToYear: editedItem?.timeOfStudyToYear
     }])
 
   const handleEducationChange = (event, index) => {
@@ -94,7 +94,7 @@ function UpdateEducation({ setPage }) {
     const userRef = doc(persons, userId);
     const storedItem = sessionStorage.getItem('editObject');
     const editedItem = JSON.parse(storedItem);
-    const educationId = `${editedItem.timeOfStudyFromYear}-${editedItem.timeOfStudyToYear}`;
+    const educationId = `${editedItem?.timeOfStudyFromYear}-${editedItem?.timeOfStudyToYear}`;
     console.log(educationId)
     const docRef = doc(collection(userRef, 'educations'), educationId);
     await deleteDoc(docRef);
@@ -118,17 +118,6 @@ function UpdateEducation({ setPage }) {
     setPage(-1)
   }
 
-  const handleAddEducationInput = () => {
-    setEducation([...education, {
-      educationLevel: "",
-      schoolName: "",
-      studyName: "",
-      timeOfStudyFromMonth: "",
-      timeOfStudyFromYear: "",
-      timeOfStudyToMonth: "",
-      timeOfStudyToYear: ""
-    }]);
-  };
 
   const handleDeleteInput = (index) => {
     const newArray = [...education];
@@ -144,17 +133,17 @@ function UpdateEducation({ setPage }) {
             <div key={index}>
               { index >= 1 && <p style={{ color: "red", cursor: "pointer" }} onClick={() => { handleDeleteInput(index) }}>Remove Education</p> }
               <Form.Label className='job_form_field'>Level of education *</Form.Label>
-              <Form.Control className='job_form_input' type='text' name='educationLevel' required value={e.educationLevel} onChange={(e) => handleEducationChange(e, index)} />
+              <Form.Control className='job_form_input' type='text' name='educationLevel' required value={e?.educationLevel} onChange={(e) => handleEducationChange(e, index)} />
               <Form.Label className='job_form_field'>Field of study</Form.Label>
-              <Form.Control className='job_form_input' type='text' name='studyName' required value={e.studyName} onChange={(e) => handleEducationChange(e, index)} />
+              <Form.Control className='job_form_input' type='text' name='studyName' required value={e?.studyName} onChange={(e) => handleEducationChange(e, index)} />
               <Form.Label className='job_form_field'>Name of school</Form.Label>
-              <Form.Control className='job_form_input' type='text' name='schoolName' required value={e.schoolName} onChange={(e) => handleEducationChange(e, index)} />
+              <Form.Control className='job_form_input' type='text' name='schoolName' required value={e?.schoolName} onChange={(e) => handleEducationChange(e, index)} />
 
               <Form.Text className='job_form_field'>Time period</Form.Text>
               <Form.Group className='job_edu_form_date'>
                 <Form.Label>From</Form.Label>
                 <div>
-                  <Form.Select name='timeOfStudyFromMonth' value={e.timeOfStudyFromMonth} onChange={(e) => handleEducationChange(e, index)}>
+                  <Form.Select name='timeOfStudyFromMonth' value={e?.timeOfStudyFromMonth} onChange={(e) => handleEducationChange(e, index)}>
                     <option>Month</option>
                     {[...new Array(12).keys()].map((i) => (
                       <option key={i + 1} value={i + 1}>
@@ -162,7 +151,7 @@ function UpdateEducation({ setPage }) {
                       </option>
                     ))}
                   </Form.Select>
-                  <Form.Select name='timeOfStudyFromYear' value={e.timeOfStudyFromYear} onChange={(e) => handleEducationChange(e, index)}>
+                  <Form.Select name='timeOfStudyFromYear' value={e?.timeOfStudyFromYear} onChange={(e) => handleEducationChange(e, index)}>
                     <option>Year</option>
                     {years.map((year) => (
                       <option key={year} value={year}>
@@ -175,7 +164,7 @@ function UpdateEducation({ setPage }) {
               <Form.Group className='job_edu_form_date'>
                 <Form.Label>To</Form.Label>
                 <div>
-                  <Form.Select name='timeOfStudyToMonth' value={e.timeOfStudyToMonth} onChange={(e) => handleEducationChange(e, index)}>
+                  <Form.Select name='timeOfStudyToMonth' value={e?.timeOfStudyToMonth} onChange={(e) => handleEducationChange(e, index)}>
                     <option>Month</option>
                     {[...new Array(12).keys()].map((i) => (
                       <option key={i + 1} value={i + 1}>
@@ -183,7 +172,7 @@ function UpdateEducation({ setPage }) {
                       </option>
                     ))}
                   </Form.Select>
-                  <Form.Select name='timeOfStudyToYear' value={e.timeOfStudyToYear} onChange={(e) => handleEducationChange(e, index)}>
+                  <Form.Select name='timeOfStudyToYear' value={e?.timeOfStudyToYear} onChange={(e) => handleEducationChange(e, index)}>
                     <option>Year</option>
                     {years.map((year) => (
                       <option key={year} value={year}>
@@ -194,12 +183,6 @@ function UpdateEducation({ setPage }) {
                 </div>
               </Form.Group>
               <br />
-              {index === education.length - 1 && (
-                <div className='job_form_add' onClick={() => handleAddEducationInput()}>
-                  <img src={addMore} alt="" />
-                  Add more
-                </div>
-              )}
             </div>
           ))}
           {error !== '' &&

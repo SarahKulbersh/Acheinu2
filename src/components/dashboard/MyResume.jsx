@@ -141,6 +141,11 @@ export const MyResume = () => {
         sessionStorage.setItem('editObject', JSON.stringify(item));
         setPage(number);
     }
+    const add = (number) => {
+        sessionStorage.removeItem('editObject');
+        setPage(number);
+    }
+
 
     return (
         <div className='my_resume'>
@@ -159,7 +164,13 @@ export const MyResume = () => {
 
 
                 <div className='resume_prof_details'>
-                    <div className="my_resume_name">Work experience</div>
+                    <div className='resume_prof_edit_head'>
+                        <div className="my_resume_name">Work experience</div>
+                        <div className='my_resume_edit_imgs'>
+                            <img src={addMore} alt="" onClick={() => add(2)} />
+                        </div>
+                    </div>
+
                     {workHistoryDetails?.map((item, index) => (
                         <div key={index} style={{ border: 'lightgray solid 1px ', borderRadius: '4px', padding: '10px', width: '300px' }}>
                             <div className='resume_prof_edit_head'>
@@ -181,7 +192,12 @@ export const MyResume = () => {
 
 
                 <div className='resume_prof_details'>
-                    <div className="my_resume_name">Education</div>
+                    <div className='resume_prof_edit_head'>
+                        <div className="my_resume_name">Education</div>
+                        <div className='my_resume_edit_imgs'>
+                            <img src={addMore} alt="" onClick={() => add(3)} />
+                        </div>
+                    </div>
 
                     {educationDetails?.map((item, index) => (
                         <div key={index} style={{ border: 'lightgray solid 1px ', borderRadius: '4px', padding: '10px', width: '300px' }}>
@@ -201,7 +217,13 @@ export const MyResume = () => {
                 </div>
 
                 <div className='resume_prof_details'>
-                    <div className="my_resume_name">Skills</div>
+                    <div className='resume_prof_edit_head'>
+                        <div className="my_resume_name">Skills</div>
+                        <div className='my_resume_edit_imgs'>
+                            <img src={addMore} alt="" onClick={() => add(4)} />
+                        </div>
+                    </div>
+
                     {skillsDetails !== undefined && !!skillsDetails?.length && skillsDetails.map((e, i) => (
                         <div key={i} style={{ border: 'lightgray solid 1px ', borderRadius: '4px', padding: '10px', width: '300px' }}>
                             <div className='resume_prof_edit_head'>

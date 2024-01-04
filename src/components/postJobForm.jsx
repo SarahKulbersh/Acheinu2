@@ -5,7 +5,7 @@ import { collection, setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { database } from "../firebaseConfig";
 import { useNavigate } from 'react-router-dom';
 import { leftArrow, rightArrow } from '../assets';
-import "./../styles/jobPost.css";
+import "../styles/jobPost.css";
 import AddIcon from '../assets/AddIcon';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -34,8 +34,9 @@ export function PostJobForm() {
     const [minPay, setMinPay] = useState('');
     const [maxPay, setMaxPay] = useState('');
     const [selectedRatePer, setSelectedRatePer] = useState('per hour');
+    const [selectedCurrency, setSelectedCurrency] = useState('$');
     const [errors, setErrors] = useState({}); // To store error messages
-    const [cardNumber, setCardNumber] = useState(sessionStorage.getItem("cardNumber")!==null ? 5 : 1 );
+    const [cardNumber, setCardNumber] = useState(sessionStorage.getItem("cardNumber") !== null ? 5 : 1);
     const navigate = useNavigate();
 
     const errorValues = Object.values(errors);
@@ -62,6 +63,11 @@ export function PostJobForm() {
 
             setSelectedRatePer(Cookies.get('selectedRatePer'))
         }
+        if (Cookies.get('selectedCurrency') !== undefined) {
+
+            setSelectedCurrency(Cookies.get('selectedCurrency'))
+        }
+
         if (Cookies.get('location') !== undefined) {
 
             setLocation(Cookies.get('location'))
@@ -158,6 +164,7 @@ export function PostJobForm() {
             Cookies.set('minPay', minPay);
             Cookies.set('maxPay', maxPay);
             Cookies.set('selectedRatePer', selectedRatePer);
+            Cookies.set('selectedCurrency', selectedCurrency);
             Cookies.set('location', location);
             Cookies.set('jobTitle', jobTitle);
             Cookies.set('selectedFullPart', selectedFullPart);
@@ -189,6 +196,7 @@ export function PostJobForm() {
                     minPay: minPay,
                     maxPay: maxPay,
                     jobPaymentPer: selectedRatePer,
+                    payCurrency: selectedCurrency,
                     jobTitle: jobTitle,
                     updatedAt: serverTimestamp(),
                     isJobActive: true,
@@ -352,9 +360,9 @@ export function PostJobForm() {
                     cardNumber === 4 &&
 
                     <Card>
-                        <Card.Body className='job_apply_form_body job_filter_body'>
-                            <Form className='job_form_apply_fields'>
-                                <div className='job_form_filter'>
+                        <Card.Body className='job_apply_form_body'>
+                            <Form className='job_form_apply_fields' >
+                                <div className='job_form_filter' >
 
                                     <Form.Group>
                                         <Form.Label className='job_form_field'>Show pay by</Form.Label>
@@ -382,6 +390,18 @@ export function PostJobForm() {
                                             <Form.Control value={maxPay} className='job_form_input' type='number' required onChange={(e) => setMaxPay(e.target.value)} />
                                         </div>
 
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label className='job_form_field'>Currency</Form.Label>
+                                        <Form.Select
+                                            required className='job_filter_select'
+                                            value={selectedCurrency}
+                                            onChange={(e) => setSelectedCurrency(e.target.value)}
+                                        >
+                                            <option value={"$"}>$</option>
+                                            <option value={"₪"}>₪</option>
+
+                                        </Form.Select>
                                     </Form.Group>
 
                                     <Form.Group>
@@ -425,7 +445,7 @@ export function PostJobForm() {
                             <Form>
                                 <p>These are your job details</p>
                                 <p> <strong>Title: </strong>{jobTitle}</p>
-                                <p> <strong>Pay: </strong>{minPay}-{maxPay} {selectedRatePer}</p>
+                                <p> <strong>Pay: </strong>{minPay}-{maxPay}{selectedCurrency} {selectedRatePer}</p>
                                 <p> <strong>Work houres: </strong>{startTime}-{endTime} {selectedTime}</p>
                                 <div className='job_apply_end_btns'>
                                     <button className='job_form_back_btn' onClick={() => handleBackBtn(5)}>
