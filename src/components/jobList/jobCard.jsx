@@ -16,6 +16,7 @@ export default function JobCard({ postingJobsData }) {
     sessionStorage.setItem("jobTitle", jobTitle)
     if (sessionStorage.getItem("userId") === null) {
       sessionStorage.setItem("locationBeforeSignIn", location.pathname)
+      setJob('')
       navigate('/signin')
     }
     else {
